@@ -43,6 +43,12 @@ type Chat {
 type Mutation {
   getResposne(input: QueryInput!) :  QueryResponse!
   deleteAllChat : DeleteAllChatResponse
+  sendInitialMessage(input: InitialMessageInput!): QueryResponse!
+  deleteChatForUser(input: InitialMessageInput!): DeleteAllChatResponse!
+}
+
+input InitialMessageInput{
+  userID: String!
 }
 
 

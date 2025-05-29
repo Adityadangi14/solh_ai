@@ -60,8 +60,10 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		DeleteAllChat func(childComplexity int) int
-		GetResposne   func(childComplexity int, input model.QueryInput) int
+		DeleteAllChat      func(childComplexity int) int
+		DeleteChatForUser  func(childComplexity int, input model.InitialMessageInput) int
+		GetResposne        func(childComplexity int, input model.QueryInput) int
+		SendInitialMessage func(childComplexity int, input model.InitialMessageInput) int
 	}
 
 	Query struct {
@@ -77,6 +79,8 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	GetResposne(ctx context.Context, input model.QueryInput) (*model.QueryResponse, error)
 	DeleteAllChat(ctx context.Context) (*model.DeleteAllChatResponse, error)
+	SendInitialMessage(ctx context.Context, input model.InitialMessageInput) (*model.QueryResponse, error)
+	DeleteChatForUser(ctx context.Context, input model.InitialMessageInput) (*model.DeleteAllChatResponse, error)
 }
 type QueryResolver interface {
 	ChatsByUserID(ctx context.Context, userID string) ([]*model.Chat, error)
@@ -151,6 +155,18 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.complexity.Mutation.DeleteAllChat(childComplexity), true
 
+	case "Mutation.deleteChatForUser":
+		if e.complexity.Mutation.DeleteChatForUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteChatForUser_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteChatForUser(childComplexity, args["input"].(model.InitialMessageInput)), true
+
 	case "Mutation.getResposne":
 		if e.complexity.Mutation.GetResposne == nil {
 			break
@@ -162,6 +178,18 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Mutation.GetResposne(childComplexity, args["input"].(model.QueryInput)), true
+
+	case "Mutation.sendInitialMessage":
+		if e.complexity.Mutation.SendInitialMessage == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_sendInitialMessage_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.SendInitialMessage(childComplexity, args["input"].(model.InitialMessageInput)), true
 
 	case "Query.chatsByUserId":
 		if e.complexity.Query.ChatsByUserID == nil {
@@ -197,6 +225,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputInitialMessageInput,
 		ec.unmarshalInputQueryInput,
 	)
 	first := true
@@ -314,6 +343,29 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
+func (ec *executionContext) field_Mutation_deleteChatForUser_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_deleteChatForUser_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_deleteChatForUser_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.InitialMessageInput, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNInitialMessageInput2githubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐInitialMessageInput(ctx, tmp)
+	}
+
+	var zeroVal model.InitialMessageInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_getResposne_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -334,6 +386,29 @@ func (ec *executionContext) field_Mutation_getResposne_argsInput(
 	}
 
 	var zeroVal model.QueryInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_sendInitialMessage_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_sendInitialMessage_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_sendInitialMessage_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.InitialMessageInput, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNInitialMessageInput2githubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐInitialMessageInput(ctx, tmp)
+	}
+
+	var zeroVal model.InitialMessageInput
 	return zeroVal, nil
 }
 
@@ -853,6 +928,126 @@ func (ec *executionContext) fieldContext_Mutation_deleteAllChat(_ context.Contex
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_sendInitialMessage(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_sendInitialMessage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().SendInitialMessage(rctx, fc.Args["input"].(model.InitialMessageInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.QueryResponse)
+	fc.Result = res
+	return ec.marshalNQueryResponse2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐQueryResponse(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_sendInitialMessage(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "response":
+				return ec.fieldContext_QueryResponse_response(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type QueryResponse", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_sendInitialMessage_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteChatForUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteChatForUser(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteChatForUser(rctx, fc.Args["input"].(model.InitialMessageInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.DeleteAllChatResponse)
+	fc.Result = res
+	return ec.marshalNDeleteAllChatResponse2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐDeleteAllChatResponse(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteChatForUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "success":
+				return ec.fieldContext_DeleteAllChatResponse_success(ctx, field)
+			case "message":
+				return ec.fieldContext_DeleteAllChatResponse_message(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeleteAllChatResponse", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteChatForUser_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_chatsByUserId(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_chatsByUserId(ctx, field)
 	if err != nil {
@@ -946,7 +1141,7 @@ func (ec *executionContext) _Query_getAllChat(ctx context.Context, field graphql
 	}
 	res := resTmp.([]*model.Chat)
 	fc.Result = res
-	return ec.marshalNChat2ᚕᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐChat(ctx, field.Selections, res)
+	return ec.marshalNChat2ᚕᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐChatᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getAllChat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3098,6 +3293,33 @@ func (ec *executionContext) fieldContext___Type_isOneOf(_ context.Context, field
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputInitialMessageInput(ctx context.Context, obj any) (model.InitialMessageInput, error) {
+	var it model.InitialMessageInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"userID"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserID = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputQueryInput(ctx context.Context, obj any) (model.QueryInput, error) {
 	var it model.QueryInput
 	asMap := map[string]any{}
@@ -3268,6 +3490,20 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_deleteAllChat(ctx, field)
 			})
+		case "sendInitialMessage":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_sendInitialMessage(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deleteChatForUser":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteChatForUser(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3775,44 +4011,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNChat2ᚕᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐChat(ctx context.Context, sel ast.SelectionSet, v []*model.Chat) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOChat2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐChat(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
-}
-
 func (ec *executionContext) marshalNChat2ᚕᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐChatᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Chat) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -3865,6 +4063,25 @@ func (ec *executionContext) marshalNChat2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_
 		return graphql.Null
 	}
 	return ec._Chat(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNDeleteAllChatResponse2githubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐDeleteAllChatResponse(ctx context.Context, sel ast.SelectionSet, v model.DeleteAllChatResponse) graphql.Marshaler {
+	return ec._DeleteAllChatResponse(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNDeleteAllChatResponse2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐDeleteAllChatResponse(ctx context.Context, sel ast.SelectionSet, v *model.DeleteAllChatResponse) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._DeleteAllChatResponse(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNInitialMessageInput2githubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐInitialMessageInput(ctx context.Context, v any) (model.InitialMessageInput, error) {
+	res, err := ec.unmarshalInputInitialMessageInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNQueryInput2githubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐQueryInput(ctx context.Context, v any) (model.QueryInput, error) {
@@ -4183,13 +4400,6 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	_ = ctx
 	res := graphql.MarshalBoolean(*v)
 	return res
-}
-
-func (ec *executionContext) marshalOChat2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐChat(ctx context.Context, sel ast.SelectionSet, v *model.Chat) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Chat(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalODeleteAllChatResponse2ᚖgithubᚗcomᚋAdityadangi14ᚋsolh_aiᚋgraphᚋmodelᚐDeleteAllChatResponse(ctx context.Context, sel ast.SelectionSet, v *model.DeleteAllChatResponse) graphql.Marshaler {

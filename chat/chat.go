@@ -7,6 +7,7 @@ import (
 
 	"github.com/Adityadangi14/solh_ai/db"
 	"github.com/Adityadangi14/solh_ai/initializers"
+	"github.com/Adityadangi14/solh_ai/prompt"
 	"google.golang.org/genai"
 )
 
@@ -73,11 +74,14 @@ func (c *Chat) Map() map[string]any {
 // 	}
 // }
 
-func SendPrompt(ctx context.Context, prompt string, userId string) (string, error) {
+func SendPrompt(ctx context.Context, query string, userId string) (string, error) {
+
+	response := prompt.Frameprompt(query, userId)
+
 	result, err := initializers.GemClient.Models.GenerateContent(
 		ctx,
 		"gemini-2.0-flash",
-		genai.Text(prompt),
+		genai.Text(response),
 		nil,
 	)
 
@@ -86,12 +90,10 @@ func SendPrompt(ctx context.Context, prompt string, userId string) (string, erro
 	}
 	res := result.Text()
 
-	obj := Chat{Query: prompt, Answer: res, UserID: userId, Timestamp: time.Now()}
-	saveChatData(obj.Map())
 	return res, nil
 }
 
-func saveChatData(prop map[string]any) {
+func SaveChatData(prop map[string]any) {
 
 	_, err := db.SaveData(prop)
 

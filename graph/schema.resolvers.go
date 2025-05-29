@@ -13,6 +13,7 @@ import (
 	"github.com/Adityadangi14/solh_ai/chat"
 	"github.com/Adityadangi14/solh_ai/db"
 	"github.com/Adityadangi14/solh_ai/graph/model"
+	"github.com/Adityadangi14/solh_ai/prompt"
 )
 
 // GetResposne is the resolver for the getResposne field.
@@ -22,6 +23,8 @@ func (r *mutationResolver) GetResposne(ctx context.Context, input model.QueryInp
 	if err != nil {
 		return nil, err
 	}
+	obj := chat.Chat{Query: input.Query, Answer: res, UserID: input.UserID, Timestamp: time.Now()}
+	chat.SaveChatData(obj.Map())
 
 	return &model.QueryResponse{Response: res}, nil
 }
@@ -39,6 +42,36 @@ func (r *mutationResolver) DeleteAllChat(ctx context.Context) (*model.DeleteAllC
 			Message: "Sueccessfully Deleted All Chats",
 		},
 		nil
+}
+
+// SendInitialMessage is the resolver for the sendInitialMessage field.
+func (r *mutationResolver) SendInitialMessage(ctx context.Context, input model.InitialMessageInput) (*model.QueryResponse, error) {
+	prompt := fmt.Sprintf("%v %v", prompt.InitPrompt, prompt.AnsweringGuidlines)
+	res, err := chat.SendPrompt(context.Background(), prompt, input.UserID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := &model.QueryResponse{Response: res}
+
+	obj := chat.Chat{Query: "", Answer: res, UserID: input.UserID, Timestamp: time.Now()}
+	chat.SaveChatData(obj.Map())
+
+	return response, nil
+}
+
+// DeleteChatForUser is the resolver for the deleteChatForUser field.
+func (r *mutationResolver) DeleteChatForUser(ctx context.Context, input model.InitialMessageInput) (*model.DeleteAllChatResponse, error) {
+	err := db.DeleteChatByUserId(input.UserID)
+
+	if err != nil {
+		return nil, err
+	}
+	return &model.DeleteAllChatResponse{
+		Success: true,
+		Message: "user chat deleted successfully",
+	}, nil
 }
 
 // ChatsByUserID is the resolver for the chatsByUserId field.
@@ -81,6 +114,7 @@ func (r *queryResolver) ChatsByUserID(ctx context.Context, userID string) ([]*mo
 	return chats, nil
 }
 
+// GetAllChat is the resolver for the getAllChat field.
 func (r *queryResolver) GetAllChat(ctx context.Context) ([]*model.Chat, error) {
 	res, err := db.GetPreviousChat()
 	if err != nil {

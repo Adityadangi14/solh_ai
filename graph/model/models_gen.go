@@ -14,6 +14,10 @@ type DeleteAllChatResponse struct {
 	Message string `json:"message"`
 }
 
+type InitialMessageInput struct {
+	UserID string `json:"userID"`
+}
+
 type Mutation struct {
 }
 
