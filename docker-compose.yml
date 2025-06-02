@@ -20,9 +20,10 @@ services:
       - "8081:8080"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/.well-known/ready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+      interval: 15s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
 
   go-server:
     build:
