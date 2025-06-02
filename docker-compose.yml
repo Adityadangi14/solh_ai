@@ -11,12 +11,18 @@ services:
       ENABLE_MODULES: text2vec-transformers
       TRANSFORMERS_INFERENCE_API: "http://t2v-transformers:8080"
     depends_on:
-      - t2v-transformers
+      t2v-transformers:
+        condition: service_healthy
 
   t2v-transformers:
     image: semitechnologies/transformers-inference:sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2
     ports:
       - "8081:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/.well-known/ready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   go-server:
     build:
