@@ -41,14 +41,23 @@ type Chat {
 }
 
 type Mutation {
-  getResposne(input: QueryInput!) :  QueryResponse!
-  deleteAllChat : DeleteAllChatResponse
+  getResposne(input: QueryInput!) : QueryResponse!
+  deleteAllChat : DeleteAllChatResponse!
   sendInitialMessage(input: InitialMessageInput!): QueryResponse!
   deleteChatForUser(input: InitialMessageInput!): DeleteAllChatResponse!
+  saveContentData(input: [ContentInput!]!): SuccessEvent!
 }
 
 input InitialMessageInput{
   userID: String!
+}
+
+input ContentInput{
+  title: String!
+  description: String!
+  url: String!
+  image: String!
+  type: String!
 }
 
 
@@ -57,10 +66,13 @@ input QueryInput {
   userId: String!
 }
 
-
-
 type QueryResponse{
   response: String!
+}
+
+type SuccessEvent{
+  success : Boolean!
+  message: String!
 }
 
 type DeleteAllChatResponse {

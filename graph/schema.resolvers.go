@@ -10,10 +10,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Adityadangi14/solh_ai/appmodels"
 	"github.com/Adityadangi14/solh_ai/chat"
+	"github.com/Adityadangi14/solh_ai/constants"
 	"github.com/Adityadangi14/solh_ai/db"
 	"github.com/Adityadangi14/solh_ai/graph/model"
 	"github.com/Adityadangi14/solh_ai/prompt"
+	"github.com/weaviate/weaviate/entities/models"
 )
 
 // GetResposne is the resolver for the getResposne field.
@@ -23,7 +26,7 @@ func (r *mutationResolver) GetResposne(ctx context.Context, input model.QueryInp
 	if err != nil {
 		return nil, err
 	}
-	obj := chat.Chat{Query: input.Query, Answer: res, UserID: input.UserID, Timestamp: time.Now()}
+	obj := appmodels.Chat{Query: input.Query, Answer: res, UserID: input.UserID, Timestamp: time.Now()}
 	chat.SaveChatData(obj.Map())
 
 	return &model.QueryResponse{Response: res}, nil
@@ -55,7 +58,7 @@ func (r *mutationResolver) SendInitialMessage(ctx context.Context, input model.I
 
 	response := &model.QueryResponse{Response: res}
 
-	obj := chat.Chat{Query: "", Answer: res, UserID: input.UserID, Timestamp: time.Now()}
+	obj := appmodels.Chat{Query: "", Answer: res, UserID: input.UserID, Timestamp: time.Now()}
 	chat.SaveChatData(obj.Map())
 
 	return response, nil
@@ -72,6 +75,39 @@ func (r *mutationResolver) DeleteChatForUser(ctx context.Context, input model.In
 		Success: true,
 		Message: "user chat deleted successfully",
 	}, nil
+}
+
+// SaveContentData is the resolver for the saveContentData field.
+func (r *mutationResolver) SaveContentData(ctx context.Context, input []*model.ContentInput) (*model.SuccessEvent, error) {
+
+	var inp []*models.Object
+
+	for _, item := range input {
+
+		mod := appmodels.Content{
+			Title:       item.Title,
+			Description: item.Description,
+			Url:         item.URL,
+			Image:       item.Image,
+			ContentType: item.Type,
+		}
+		in := &models.Object{
+			Class:      constants.ClassContent.String(),
+			Properties: mod.Map(),
+		}
+
+		inp = append(inp, in)
+
+	}
+
+	_, err := db.SaveContent(inp)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.SuccessEvent{Success: true, Message: "data successfully added"}, nil
+
 }
 
 // ChatsByUserID is the resolver for the chatsByUserId field.

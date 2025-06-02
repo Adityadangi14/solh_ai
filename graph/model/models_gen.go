@@ -9,6 +9,14 @@ type Chat struct {
 	Timestamp string `json:"timestamp"`
 }
 
+type ContentInput struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
+	Image       string `json:"image"`
+	Type        string `json:"type"`
+}
+
 type DeleteAllChatResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
@@ -31,4 +39,9 @@ type QueryInput struct {
 
 type QueryResponse struct {
 	Response string `json:"response"`
+}
+
+type SuccessEvent struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }

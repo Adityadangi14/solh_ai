@@ -17,3 +17,11 @@ services:
     image: semitechnologies/transformers-inference:sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2
     ports:
       - "8081:8080"
+
+  go-server:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - weaviate
