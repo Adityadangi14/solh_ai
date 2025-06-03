@@ -12,14 +12,20 @@ services:
       TRANSFORMERS_INFERENCE_API: "http://t2v-transformers:8080"
     depends_on:
       t2v-transformers:
-        condition: service_healthy
+        condition: service_started
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -q --spider http://localhost:8080/v1/.well-known/ready || exit 1" ]
+      interval: 15s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
 
   t2v-transformers:
     image: semitechnologies/transformers-inference:sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2
     ports:
       - "8081:8080"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/.well-known/ready" ]
+      test: [ "CMD-SHELL", "wget -q --spider http://localhost:8080/v1/.well-known/ready || exit 1" ]
       interval: 15s
       timeout: 10s
       retries: 30
@@ -31,4 +37,5 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - weaviate
+      weaviate:
+        condition: service_healthy
