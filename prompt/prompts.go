@@ -76,6 +76,11 @@ Middle Stage: Introduce structured resources like journaling, programs, and expe
 Severe Stage: Stay grounded and focused, gently guiding toward clinical help, support groups, or crisis support via "Talk Now
 `
 
+const ReccommendationGuidelines = `
+1. Always format well.
+2. Do suggest only when if needed.
+`
+
 func Frameprompt(query string, userId string) string {
 	var prompt string
 	resp, err := db.ReadChatsByUserId(userId)
@@ -91,7 +96,11 @@ func Frameprompt(query string, userId string) string {
 
 	chat := string(jsonBytes)
 
-	prompt = "user previous chat is:- \n" + chat + "\n" + AnsweringGuidlines + "\n" + "user current query is :-" + query
+	recomm, _ := db.NearSearchContent(query)
+
+	prompt = "user previous chat is:- \n" + chat + "\n" + AnsweringGuidlines + "\n" + "user current query is :-" + query + ReccommendationGuidelines + "Things you can reccommend :- " + recomm
+
+	fmt.Println(prompt)
 
 	return prompt
 }
