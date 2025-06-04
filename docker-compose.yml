@@ -64,7 +64,7 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     entrypoint: >
-      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot --email your@email.com --agree-tos --no-eff-email -d solhai.solhapp.com"
+      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot --email muneet.dhanker@omlogic.com --agree-tos --no-eff-email -d ai.solhapp.com"
     networks:
       - web
 
