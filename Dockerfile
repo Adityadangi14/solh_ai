@@ -9,6 +9,6 @@ COPY . .
 
 RUN go build -o main server.go
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["./main"]

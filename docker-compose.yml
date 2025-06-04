@@ -3,6 +3,8 @@ services:
     image: semitechnologies/weaviate:latest
     ports:
       - "8080:8080"
+    volumes:
+      - ./weaviate-data:/var/lib/weaviate
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
@@ -35,7 +37,7 @@ services:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
       weaviate:
         condition: service_healthy
