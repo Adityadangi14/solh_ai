@@ -21,6 +21,8 @@ services:
       timeout: 10s
       retries: 30
       start_period: 30s
+    networks:
+      - web
 
   t2v-transformers:
     image: semitechnologies/transformers-inference:sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2
@@ -32,6 +34,8 @@ services:
       timeout: 10s
       retries: 30
       start_period: 30s
+    networks:
+      - web
 
   go-server:
     build:
