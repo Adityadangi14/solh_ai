@@ -79,6 +79,15 @@ Severe Stage: Stay grounded and focused, gently guiding toward clinical help, su
 const ReccommendationGuidelines = `
 1. Always format well.
 2. Do suggest only when if needed.
+3. Few examples about suggesting.
+	*Blog
+		title - The Halo Effect: How First Impressions Shape Our Perception and Decision-Making
+		description - "The way we see others and make decisions about them often seems intuitive and immediate. How much of this is shaped by biases we might not even recognize? One of the most influential biases in psychology is the Halo Effect."
+		url - "https://solhapp.com/blog/halo-effect-first-impressions"
+	*video 
+		title - example title
+		description - example description
+		url -  "https://solhapp.com/video.mp4"
 `
 
 func Frameprompt(query string, userId string) string {
