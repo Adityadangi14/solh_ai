@@ -41,6 +41,8 @@ services:
     depends_on:
       weaviate:
         condition: service_healthy
+    networks:
+      - web
 
   nginx:
     image: nginx:latest
@@ -56,6 +58,7 @@ services:
       - go-server
     networks:
       - web
+    command: [ "nginx", "-g", "daemon off;" ]
 
   certbot:
     image: certbot/certbot
