@@ -12,6 +12,9 @@ services:
       DEFAULT_VECTORIZER_MODULE: text2vec-transformers
       ENABLE_MODULES: text2vec-transformers
       TRANSFORMERS_INFERENCE_API: "http://t2v-transformers:8080"
+      RAFT_BOOTSTRAP_EXPECTED: 1
+      DISABLE_TELEMETRY: "true"
+      RAFT_BOOTSTRAP_TIMEOUT: 120
     depends_on:
       t2v-transformers:
         condition: service_started
