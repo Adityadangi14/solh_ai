@@ -3,6 +3,7 @@ package prompt
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/Adityadangi14/solh_ai/db"
 )
@@ -97,13 +98,24 @@ func Frameprompt(query string, userId string) string {
 	if err != nil {
 		fmt.Println("Error in retriving chats")
 	}
+
 	jsonBytes, err := json.MarshalIndent(resp.Data, "", "  ")
+
+	jsonRes, _ := json.Marshal(resp)
+
+	var resJson []map[string]any
+
+	err = json.Unmarshal(jsonRes, &resJson)
+
+	fmt.Println("jsonRes", resJson)
 
 	if err != nil {
 		fmt.Println("Error in retriving chats")
 	}
 
 	chat := string(jsonBytes)
+
+	log.Println(chat)
 
 	recomm, _ := db.NearSearchContent(query)
 

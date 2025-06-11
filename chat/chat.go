@@ -2,6 +2,7 @@ package chat
 
 import (
 	"context"
+
 	"log"
 
 	"github.com/Adityadangi14/solh_ai/db"

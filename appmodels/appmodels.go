@@ -18,6 +18,14 @@ func (c *Chat) Map() map[string]any {
 	}
 }
 
+type ChatList struct {
+	AllChat []Chat
+}
+
+func (c *ChatList) ChatWithLimit(limit int) {
+
+}
+
 type Content struct {
 	Title       string
 	Description string
