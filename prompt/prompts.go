@@ -89,6 +89,7 @@ const ReccommendationGuidelines = `
 		title - example title
 		description - example description
 		url -  "https://solhapp.com/video.mp4"
+4. while suggesting think yourself as a formatter.
 `
 
 func Frameprompt(query string, userId string) string {
