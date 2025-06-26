@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/Adityadangi14/solh_ai/initializers"
+	"github.com/weaviate/weaviate-go-client/v4/weaviate/filters"
 	"github.com/weaviate/weaviate-go-client/v4/weaviate/graphql"
 	"github.com/weaviate/weaviate/entities/models"
 )
@@ -53,4 +54,30 @@ func NearSearchContent(text string) (string, error) {
 
 	return string(str), nil
 
+}
+
+func GetUrlObject(url string) (*models.GraphQLResponse, error) {
+	whereFilter := filters.Where().
+		WithPath([]string{"url"}).
+		WithOperator(filters.Equal).
+		WithValueText(url)
+
+	resp, err := initializers.WeaviateClient.GraphQL().Get().
+		WithClassName("Content").
+		WithWhere(whereFilter).
+		WithFields(
+			graphql.Field{Name: "title"},
+			graphql.Field{Name: "contentType"},
+			graphql.Field{Name: "description"},
+			graphql.Field{Name: "url"},
+			graphql.Field{Name: "image"},
+		).
+		WithLimit(1).
+		Do(context.Background())
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }

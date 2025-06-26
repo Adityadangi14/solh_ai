@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/Adityadangi14/solh_ai/db"
+	"github.com/weaviate/weaviate/entities/models"
 )
 
 const InitPrompt = `
@@ -22,9 +23,6 @@ Your Purpose
 You are not here to diagnose or replace therapy, but to make mental health support more accessible, approachable, and personalized. You offer scientifically-backed, non - clinical techniques, gentle conversation, and self-help tools based on therapy techniques of CBT (Cognitive Behavioral Therapy) and DBT (dialective behavior therapy).
 
 You listen first. You respond with empathy. You recommend with care.
-
-
-
 
 
 Your Knowledge Base
@@ -75,24 +73,27 @@ Middle Stage: Introduce structured resources like journaling, programs, and expe
  
 
 Severe Stage: Stay grounded and focused, gently guiding toward clinical help, support groups, or crisis support via "Talk Now
+
+before recommending anything .Please say something like hear are some suggestion for you or hear are few resorces for you very politely.
+
 `
 
 const ReccommendationGuidelines = `
-1. Always format well.
-2. Do suggest only when if needed.
-3. Few examples about suggesting.
-	*Blog
-		title - The Halo Effect: How First Impressions Shape Our Perception and Decision-Making
-		description - "The way we see others and make decisions about them often seems intuitive and immediate. How much of this is shaped by biases we might not even recognize? One of the most influential biases in psychology is the Halo Effect."
-		url - "https://solhapp.com/blog/halo-effect-first-impressions"
-	*video 
-		title - example title
-		description - example description
-		url -  "https://solhapp.com/video.mp4"
-4. while suggesting think yourself as a formatter.
+1. Always format the output cleanly and consistently.
+2. Provide suggestions only when clearly appropriate or helpful.
+3. When suggesting content, use only direct URLs. Example formats:
+     https://solhapp.com/blog/halo-effect-first-impressions
+     https://solhapp.com/blog/grieving-loss-of-sumit
+     https://solhapp.com/blog/stockholm-syndrome
+     https://solhapp.com/video.mp4
+	 https://solhapp-live.s3.amazonaws.com/solhApp/resources/audio/1718886526369.mp3
+4. Act as a formatter—your role is to ensure suggestions are well-presented, not to editorialize.
+5. Output only the URLs—**no titles, descriptions, or additional text**.
+6. Organize data carefully.
 `
 
 func Frameprompt(query string, userId string) string {
+
 	var prompt string
 	resp, err := db.ReadChatsByUserId(userId)
 
@@ -100,21 +101,7 @@ func Frameprompt(query string, userId string) string {
 		fmt.Println("Error in retriving chats")
 	}
 
-	jsonBytes, err := json.MarshalIndent(resp.Data, "", "  ")
-
-	jsonRes, _ := json.Marshal(resp)
-
-	var resJson []map[string]any
-
-	err = json.Unmarshal(jsonRes, &resJson)
-
-	fmt.Println("jsonRes", resJson)
-
-	if err != nil {
-		fmt.Println("Error in retriving chats")
-	}
-
-	chat := string(jsonBytes)
+	chat, _ := getChatMapString(resp)
 
 	log.Println(chat)
 
@@ -122,7 +109,58 @@ func Frameprompt(query string, userId string) string {
 
 	prompt = "user previous chat is:- \n" + chat + "\n" + AnsweringGuidlines + "\n" + "user current query is :-" + query + ReccommendationGuidelines + "Things you can reccommend :- " + recomm
 
-	fmt.Println(prompt)
-
 	return prompt
+}
+
+func getChatMapString(cMap *models.GraphQLResponse) (string, error) {
+
+	res, err := json.Marshal(cMap.Data)
+
+	if err != nil {
+		fmt.Println("error in unmarsaling 118")
+	}
+	var unmarshaledMap map[string]map[string]any
+	err = json.Unmarshal(res, &unmarshaledMap)
+
+	if err != nil {
+		fmt.Println("error in unmarsaling 124")
+	}
+
+	var list []map[string]any
+
+	resList := make([]map[string]any, 0)
+
+	if get, ok := unmarshaledMap["Get"]; ok {
+		if chat, ok := get["Chat"]; ok {
+
+			result, _ := json.Marshal(chat)
+
+			json.Unmarshal(result, &list)
+
+			for _, item := range list {
+				var answer map[string]any
+
+				if ans, ok := item["answer"]; ok {
+
+					strAnswer, _ := ans.(string)
+					err = json.Unmarshal([]byte(string(strAnswer)), &answer)
+
+					if err != nil {
+						fmt.Println("Error unmarshaling answer ", err)
+					}
+
+					fmt.Println("answerrr", answer)
+				}
+
+				resList = append(resList, map[string]any{"query": item["query"], "answer": answer["text"]})
+			}
+		}
+	}
+	re, err := json.Marshal(resList)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(re), nil
 }

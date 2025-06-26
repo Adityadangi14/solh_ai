@@ -26,7 +26,7 @@ func (r *mutationResolver) GetResposne(ctx context.Context, input model.QueryInp
 	if err != nil {
 		return nil, err
 	}
-	obj := appmodels.Chat{Query: input.Query, Answer: res, UserID: input.UserID, Timestamp: time.Now()}
+	obj := appmodels.Chat{Query: input.Query, Answer: string(res), UserID: input.UserID, Timestamp: time.Now()}
 	chat.SaveChatData(obj.Map())
 
 	return &model.QueryResponse{Response: res}, nil
@@ -58,7 +58,9 @@ func (r *mutationResolver) SendInitialMessage(ctx context.Context, input model.I
 
 	response := &model.QueryResponse{Response: res}
 
-	obj := appmodels.Chat{Query: "", Answer: res, UserID: input.UserID, Timestamp: time.Now()}
+	obj := appmodels.Chat{Query: "", Answer: string(res), UserID: input.UserID, Timestamp: time.Now()}
+
+	fmt.Println(obj)
 	chat.SaveChatData(obj.Map())
 
 	return response, nil
@@ -79,7 +81,6 @@ func (r *mutationResolver) DeleteChatForUser(ctx context.Context, input model.In
 
 // SaveContentData is the resolver for the saveContentData field.
 func (r *mutationResolver) SaveContentData(ctx context.Context, input []*model.ContentInput) (*model.SuccessEvent, error) {
-
 	var inp []*models.Object
 
 	for _, item := range input {
@@ -107,7 +108,6 @@ func (r *mutationResolver) SaveContentData(ctx context.Context, input []*model.C
 	}
 
 	return &model.SuccessEvent{Success: true, Message: "data successfully added"}, nil
-
 }
 
 // ChatsByUserID is the resolver for the chatsByUserId field.
@@ -131,7 +131,6 @@ func (r *queryResolver) ChatsByUserID(ctx context.Context, userID string) ([]*mo
 		return nil, err
 	}
 
-	fmt.Println(string(result))
 	if err := json.Unmarshal(result, &resp); err != nil {
 		fmt.Println("Failed to unmarshal data:", err)
 		return nil, err
@@ -175,7 +174,6 @@ func (r *queryResolver) GetAllChat(ctx context.Context) ([]*model.Chat, error) {
 		return nil, err
 	}
 
-	fmt.Println(string(result))
 	if err := json.Unmarshal(result, &resp); err != nil {
 		fmt.Println("Failed to unmarshal data:", err)
 		return nil, err

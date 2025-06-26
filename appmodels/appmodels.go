@@ -43,3 +43,19 @@ func (c *Content) Map() map[string]any {
 		"contentType": c.ContentType,
 	}
 }
+
+type ContentModel struct {
+	Get GetContent `json:"Get"`
+}
+
+type GetContent struct {
+	Content []ContentItem `json:"Content"`
+}
+
+type ContentItem struct {
+	Title       string `json:"title"`
+	ContentType string `json:"contentType"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
+	Image       string `json:"image"`
+}

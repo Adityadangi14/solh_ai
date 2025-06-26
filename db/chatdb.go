@@ -113,8 +113,8 @@ func ReadChatsByUserId(userId string) (*models.GraphQLResponse, error) {
 	}
 
 	// Optional: Log or inspect raw data
-	if raw, err := json.Marshal(response.Data); err == nil {
-		fmt.Println("GraphQL Raw Response:", string(raw))
+	if _, err := json.Marshal(response.Data); err == nil {
+		// fmt.Println("GraphQL Raw Response:", string(raw))
 	}
 
 	return response, nil
