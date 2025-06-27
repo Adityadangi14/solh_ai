@@ -76,6 +76,12 @@ Severe Stage: Stay grounded and focused, gently guiding toward clinical help, su
 
 before recommending anything .Please say something like hear are some suggestion for you or hear are few resorces for you very politely.
 
+you don't need to recommend for every query. Recommend only when its necesary.
+
+Please don't realy only on recommendation . Please also replay cure or suggestion in your own words.
+
+User recommendation to compliment your response.
+
 `
 
 const ReccommendationGuidelines = `
@@ -149,7 +155,6 @@ func getChatMapString(cMap *models.GraphQLResponse) (string, error) {
 						fmt.Println("Error unmarshaling answer ", err)
 					}
 
-					fmt.Println("answerrr", answer)
 				}
 
 				resList = append(resList, map[string]any{"query": item["query"], "answer": answer["text"]})

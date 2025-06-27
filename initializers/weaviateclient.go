@@ -26,6 +26,10 @@ func ConnectToWeaviate() {
 		panic(err)
 	}
 
+	if client == nil {
+		panic("Weaviate client is nil")
+	}
+
 	WeaviateClient = client
 
 	fmt.Printf("Weaviate connection status: %v \n", ready)

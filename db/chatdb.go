@@ -16,15 +16,32 @@ import (
 )
 
 func SaveData(obj map[string]any) (*data.ObjectWrapper, error) {
+	res, _ := initializers.WeaviateClient.Misc().LiveChecker().Do(context.Background())
 
-	created, err := initializers.WeaviateClient.Data().Creator().
+	fmt.Println("client ", res)
+	fmt.Printf("WeaviateClient: %T\n", initializers.WeaviateClient)
+	fmt.Printf("WeaviateClient.Data(): %T\n", initializers.WeaviateClient.Data())
+	fmt.Printf("WeaviateClient.Data().Creator(): %T\n", initializers.WeaviateClient.Data().Creator())
+
+	creator := initializers.WeaviateClient.Data().Creator()
+
+	created, err := creator.
 		WithClassName(constants.ClassChat.String()).
 		WithProperties(obj).
 		Do(context.Background())
 
 	if err != nil {
-		return nil, err
+
+		panic("Error while creating object")
+
 	}
+
+	// defer func() {
+	// 	if r := recover(); r != nil {
+	// 		fmt.Printf("Recovered from panic: %v\n", r)
+	// 		debug.PrintStack()
+	// 	}
+	// }()
 
 	return created, nil
 }
@@ -116,6 +133,5 @@ func ReadChatsByUserId(userId string) (*models.GraphQLResponse, error) {
 	if _, err := json.Marshal(response.Data); err == nil {
 		// fmt.Println("GraphQL Raw Response:", string(raw))
 	}
-
 	return response, nil
 }

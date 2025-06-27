@@ -12,9 +12,16 @@ import (
 
 func InitSchema() {
 	err := DeclareChatSchema(initializers.WeaviateClient)
+
+	if err != nil {
+		fmt.Println("Error in init - DeclareChatSchema", err)
+	}
+
 	err = DeclareContentSchema(initializers.WeaviateClient)
 
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println("Error in init - DeclareContentSchema", err)
+	}
 }
 
 func DeclareChatSchema(client *weaviate.Client) error {

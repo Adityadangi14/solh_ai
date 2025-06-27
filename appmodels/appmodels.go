@@ -1,12 +1,10 @@
 package appmodels
 
-import "time"
-
 type Chat struct {
 	Query     string
 	Answer    string
 	UserID    string
-	Timestamp time.Time
+	Timestamp string
 }
 
 func (c *Chat) Map() map[string]any {

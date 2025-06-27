@@ -26,7 +26,7 @@ func (r *mutationResolver) GetResposne(ctx context.Context, input model.QueryInp
 	if err != nil {
 		return nil, err
 	}
-	obj := appmodels.Chat{Query: input.Query, Answer: string(res), UserID: input.UserID, Timestamp: time.Now()}
+	obj := appmodels.Chat{Query: input.Query, Answer: string(res), UserID: input.UserID, Timestamp: time.Now().Format(time.RFC3339)}
 	chat.SaveChatData(obj.Map())
 
 	return &model.QueryResponse{Response: res}, nil
@@ -58,9 +58,8 @@ func (r *mutationResolver) SendInitialMessage(ctx context.Context, input model.I
 
 	response := &model.QueryResponse{Response: res}
 
-	obj := appmodels.Chat{Query: "", Answer: string(res), UserID: input.UserID, Timestamp: time.Now()}
+	obj := appmodels.Chat{Query: "", Answer: string(res), UserID: input.UserID, Timestamp: time.Now().Format(time.RFC3339)}
 
-	fmt.Println(obj)
 	chat.SaveChatData(obj.Map())
 
 	return response, nil

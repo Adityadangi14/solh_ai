@@ -137,6 +137,7 @@ func RenderBlog(model appmodels.ContentModel) map[string]any {
 
 	blogMap := map[string]any{
 		"type":    "blog",
+		"route":   "/blogs",
 		"data":    model.Get.Content[0].URL,
 		"content": fmt.Sprintf(str, model.Get.Content[0].Image, model.Get.Content[0].Title),
 	}
@@ -250,6 +251,7 @@ func RenderAudio(model appmodels.ContentModel) map[string]any {
 
 	audioMap := map[string]any{
 		"type":    "audio",
+		"route":   "/audio",
 		"data":    model.Get.Content[0].URL,
 		"content": fmt.Sprintf(str, model.Get.Content[0].Image, model.Get.Content[0].Title),
 	}

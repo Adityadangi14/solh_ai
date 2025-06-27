@@ -30,8 +30,6 @@ func SendPrompt(ctx context.Context, query string, userId string) (string, error
 	}
 	res := result.Text()
 
-	fmt.Println(res)
-
 	renderedComp, err := renderer.Render(res)
 
 	if err != nil {
@@ -51,9 +49,9 @@ func SaveChatData(prop map[string]any) {
 
 	_, err := db.SaveData(prop)
 
-	fmt.Println(prop)
+	fmt.Println("prop ", prop)
 
 	if err != nil {
-		log.Fatalf("Failed to save chat data %v", err)
+		log.Printf("Failed to save chat data %v", err)
 	}
 }
