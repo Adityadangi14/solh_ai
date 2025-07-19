@@ -1,0 +1,37 @@
+{"time":"2025-07-16T16:24:27.9669626+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:25:22.4205735+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:25:26.9801856+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:26:03.0271874+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:26:03.0277384+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:26:07.6051759+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:28:01.1196985+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:28:01.12025+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:28:05.6983765+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:29:18.6629741+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:29:18.663524+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:29:23.2505017+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:34:30.5201722+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:34:30.5207247+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:34:35.0543637+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:34:35.0549174+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:34:39.5986154+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:35:19.7521223+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:35:19.7526328+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:35:24.3309958+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:35:40.1118251+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:35:40.1123745+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:35:44.6756833+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:37:22.7837236+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:37:22.7842896+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:37:27.348907+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:38:37.5661354+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:38:37.566704+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:38:42.1377651+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:38:59.9123772+05:30","level":"INFO","msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:38:59.9123772+05:30","level":"INFO","msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:39:04.4918145+05:30","level":"ERROR","msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}
+{"time":"2025-07-16T16:39:16.3464074+05:30","level":"INFO","source":{"function":"github.com/Adityadangi14/solh_ai/initializers.LoadEnvVariables","file":"D:/go_project/solh_ai/initializers/loadenv.go","line":14},"msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:39:16.3474067+05:30","level":"INFO","source":{"function":"github.com/Adityadangi14/solh_ai/initializers.ConnectToGemini","file":"D:/go_project/solh_ai/initializers/geminiclient.go","line":28},"msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:39:20.5655071+05:30","level":"INFO","source":{"function":"github.com/Adityadangi14/solh_ai/initializers.LoadEnvVariables","file":"D:/go_project/solh_ai/initializers/loadenv.go","line":14},"msg":".env file loaded successfully"}
+{"time":"2025-07-16T16:39:20.5655071+05:30","level":"INFO","source":{"function":"github.com/Adityadangi14/solh_ai/initializers.ConnectToGemini","file":"D:/go_project/solh_ai/initializers/geminiclient.go","line":28},"msg":"Successfully connected to Gemini client"}
+{"time":"2025-07-16T16:39:25.1464348+05:30","level":"ERROR","source":{"function":"github.com/Adityadangi14/solh_ai/initializers.ConnectToWeaviate","file":"D:/go_project/solh_ai/initializers/weaviateclient.go","line":31},"msg":"Weaviate ready check failed","error":"status code: -1, error: check the DerivedFromError field for more information: Get \"http://weaviate:8080/v1/.well-known/ready\": dial tcp: lookup weaviate: no such host"}

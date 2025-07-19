@@ -2,8 +2,6 @@ package initializers
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"os"
 
 	"google.golang.org/genai"
@@ -12,7 +10,6 @@ import (
 var GemClient *genai.Client
 
 func ConnectToGemini() {
-
 	key := os.Getenv("gemini_api_key")
 
 	ctx := context.Background()
@@ -23,9 +20,10 @@ func ConnectToGemini() {
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		AppLogger.Error("Failed to connect to Gemini", "error", err)
+		panic("Gemini client initialization failed")
 	}
 
-	fmt.Println("Successfully connected to gemini client")
 	GemClient = client
+	AppLogger.Info("Successfully connected to Gemini client")
 }

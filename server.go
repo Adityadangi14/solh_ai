@@ -12,12 +12,15 @@ import (
 	"github.com/Adityadangi14/solh_ai/db"
 	"github.com/Adityadangi14/solh_ai/graph"
 	"github.com/Adityadangi14/solh_ai/initializers"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func init() {
+	initializers.InitAppLogs()
 	initializers.LoadEnvVariables()
 	initializers.ConnectToGemini()
 	initializers.ConnectToWeaviate()
+
 	db.InitSchema()
 }
 
@@ -57,4 +60,10 @@ func main() {
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+
+	go func() {
+		log.Println("Starting Prometheus metrics on :9091/metrics")
+		http.Handle("/metrics", promhttp.Handler())
+		log.Fatal(http.ListenAndServe(":9091", nil))
+	}()
 }

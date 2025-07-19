@@ -16,12 +16,13 @@ import (
 )
 
 func SaveData(obj map[string]any) (*data.ObjectWrapper, error) {
-	res, _ := initializers.WeaviateClient.Misc().LiveChecker().Do(context.Background())
+	res, err := initializers.WeaviateClient.Misc().LiveChecker().Do(context.Background())
+	if err != nil {
+		initializers.AppLogger.Error("Weaviate live check failed", "error", err)
+		return nil, err
+	}
 
-	fmt.Println("client ", res)
-	fmt.Printf("WeaviateClient: %T\n", initializers.WeaviateClient)
-	fmt.Printf("WeaviateClient.Data(): %T\n", initializers.WeaviateClient.Data())
-	fmt.Printf("WeaviateClient.Data().Creator(): %T\n", initializers.WeaviateClient.Data().Creator())
+	initializers.AppLogger.Info("Weaviate live check successful", "live", res)
 
 	creator := initializers.WeaviateClient.Data().Creator()
 
@@ -31,23 +32,15 @@ func SaveData(obj map[string]any) (*data.ObjectWrapper, error) {
 		Do(context.Background())
 
 	if err != nil {
-
-		panic("Error while creating object")
-
+		initializers.AppLogger.Error("Error while creating object in Weaviate", "error", err)
+		return nil, fmt.Errorf("error while creating object: %w", err)
 	}
 
-	// defer func() {
-	// 	if r := recover(); r != nil {
-	// 		fmt.Printf("Recovered from panic: %v\n", r)
-	// 		debug.PrintStack()
-	// 	}
-	// }()
-
+	initializers.AppLogger.Info("Object created successfully in Weaviate", "class", constants.ClassChat.String())
 	return created, nil
 }
 
 func GetPreviousChat() (*models.GraphQLResponse, error) {
-	// Define the fields to retrieve from the Chat class
 	fields := []graphql.Field{
 		{Name: "query"},
 		{Name: "answer"},
@@ -55,28 +48,34 @@ func GetPreviousChat() (*models.GraphQLResponse, error) {
 		{Name: "timestamp"},
 	}
 
-	// Build the GraphQL query
 	resp, err := initializers.WeaviateClient.GraphQL().Get().
-		WithClassName(constants.ClassChat.String()). // e.g., "Chat"
+		WithClassName(constants.ClassChat.String()).
 		WithFields(fields...).
 		WithLimit(10).
 		Do(context.Background())
 
 	if err != nil {
+		initializers.AppLogger.Error("Failed to get previous chats", "error", err)
 		return nil, fmt.Errorf("failed to get previous chat: %w", err)
 	}
 
+	initializers.AppLogger.Info("Fetched previous chats successfully", "count", len(resp.Data))
 	return resp, nil
 }
 
 func DeleteAllChat() error {
+	err := initializers.WeaviateClient.Schema().ClassDeleter().
+		WithClassName(constants.ClassChat.String()).
+		Do(context.Background())
 
-	if err := initializers.WeaviateClient.Schema().ClassDeleter().WithClassName(constants.ClassChat.String()).Do(context.Background()); err != nil {
-
+	if err != nil {
 		if status, ok := err.(*fault.WeaviateClientError); ok && status.StatusCode != http.StatusBadRequest {
+			initializers.AppLogger.Error("Failed to delete class", "error", err)
 			return err
 		}
 	}
+
+	initializers.AppLogger.Info("All chats deleted successfully")
 	return nil
 }
 
@@ -91,11 +90,12 @@ func DeleteChatByUserId(userId string) error {
 		Do(context.Background())
 
 	if err != nil {
+		initializers.AppLogger.Error("Failed to delete chat by userID", "userID", userId, "error", err)
 		return err
 	}
 
+	initializers.AppLogger.Info("Deleted chat(s) by userID", "userID", userId)
 	return nil
-
 }
 
 func ReadChatsByUserId(userId string) (*models.GraphQLResponse, error) {
@@ -107,10 +107,8 @@ func ReadChatsByUserId(userId string) (*models.GraphQLResponse, error) {
 	}
 
 	response, err := initializers.WeaviateClient.GraphQL().Get().
-		WithClassName("Chat").
-		WithFields(
-			fields...,
-		).
+		WithClassName(constants.ClassChat.String()).
+		WithFields(fields...).
 		WithWhere(filters.Where().
 			WithPath([]string{"userID"}).
 			WithOperator(filters.Equal).
@@ -126,12 +124,16 @@ func ReadChatsByUserId(userId string) (*models.GraphQLResponse, error) {
 		Do(context.Background())
 
 	if err != nil {
+		initializers.AppLogger.Error("GraphQL query failed", "userID", userId, "error", err)
 		return nil, fmt.Errorf("GraphQL query failed: %w", err)
 	}
 
-	// Optional: Log or inspect raw data
-	if _, err := json.Marshal(response.Data); err == nil {
-		// fmt.Println("GraphQL Raw Response:", string(raw))
+	if raw, err := json.Marshal(response.Data); err == nil {
+		initializers.AppLogger.Info("Fetched chats for user", "userID", userId)
+		// You can log raw string if needed:
+		// initializers.AppLogger.Debug("Chat raw JSON", "json", string(raw))
+		_ = raw
 	}
+
 	return response, nil
 }

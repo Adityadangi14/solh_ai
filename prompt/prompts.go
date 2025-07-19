@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/Adityadangi14/solh_ai/db"
+	"github.com/Adityadangi14/solh_ai/initializers"
 	"github.com/weaviate/weaviate/entities/models"
 )
 
@@ -119,53 +120,69 @@ func Frameprompt(query string, userId string) string {
 }
 
 func getChatMapString(cMap *models.GraphQLResponse) (string, error) {
-
 	res, err := json.Marshal(cMap.Data)
-
 	if err != nil {
-		fmt.Println("error in unmarsaling 118")
-	}
-	var unmarshaledMap map[string]map[string]any
-	err = json.Unmarshal(res, &unmarshaledMap)
-
-	if err != nil {
-		fmt.Println("error in unmarsaling 124")
-	}
-
-	var list []map[string]any
-
-	resList := make([]map[string]any, 0)
-
-	if get, ok := unmarshaledMap["Get"]; ok {
-		if chat, ok := get["Chat"]; ok {
-
-			result, _ := json.Marshal(chat)
-
-			json.Unmarshal(result, &list)
-
-			for _, item := range list {
-				var answer map[string]any
-
-				if ans, ok := item["answer"]; ok {
-
-					strAnswer, _ := ans.(string)
-					err = json.Unmarshal([]byte(string(strAnswer)), &answer)
-
-					if err != nil {
-						fmt.Println("Error unmarshaling answer ", err)
-					}
-
-				}
-
-				resList = append(resList, map[string]any{"query": item["query"], "answer": answer["text"]})
-			}
-		}
-	}
-	re, err := json.Marshal(resList)
-
-	if err != nil {
+		initializers.AppLogger.Error("Failed to marshal GraphQL response", "error", err)
 		return "", err
 	}
 
+	var unmarshaledMap map[string]map[string]any
+	err = json.Unmarshal(res, &unmarshaledMap)
+	if err != nil {
+		initializers.AppLogger.Error("Failed to unmarshal into expected Get.Chat format", "error", err)
+		return "", err
+	}
+
+	var list []map[string]any
+	resList := make([]map[string]any, 0)
+
+	getData, ok := unmarshaledMap["Get"]
+	if !ok {
+		initializers.AppLogger.Warn("Missing 'Get' key in response")
+		return "[]", nil
+	}
+
+	chatData, ok := getData["Chat"]
+	if !ok {
+		initializers.AppLogger.Warn("Missing 'Chat' key in Get block")
+		return "[]", nil
+	}
+
+	result, err := json.Marshal(chatData)
+	if err != nil {
+		initializers.AppLogger.Error("Failed to marshal 'Chat' block", "error", err)
+		return "", err
+	}
+
+	err = json.Unmarshal(result, &list)
+	if err != nil {
+		initializers.AppLogger.Error("Failed to unmarshal chat list", "error", err)
+		return "", err
+	}
+
+	for _, item := range list {
+		var answer map[string]any
+
+		if ans, ok := item["answer"]; ok {
+			strAnswer, _ := ans.(string)
+			err = json.Unmarshal([]byte(strAnswer), &answer)
+			if err != nil {
+				initializers.AppLogger.Warn("Failed to unmarshal answer JSON", "error", err, "value", strAnswer)
+			}
+		}
+
+		resList = append(resList, map[string]any{
+			"query":  item["query"],
+			"answer": answer["text"],
+		})
+	}
+
+	re, err := json.Marshal(resList)
+	if err != nil {
+		initializers.AppLogger.Error("Failed to marshal final result list", "error", err)
+		return "", err
+	}
+
+	initializers.AppLogger.Info("Successfully transformed chat response", "count", len(resList))
 	return string(re), nil
 }

@@ -2,7 +2,6 @@ package initializers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/weaviate/weaviate-go-client/v4/weaviate"
 )
@@ -10,6 +9,7 @@ import (
 var WeaviateClient *weaviate.Client
 
 func ConnectToWeaviate() {
+
 	cfg := weaviate.Config{
 		Host:   "weaviate:8080",
 		Scheme: "http",
@@ -17,20 +17,21 @@ func ConnectToWeaviate() {
 
 	client, err := weaviate.NewClient(cfg)
 	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Check the connection
-	ready, err := client.Misc().ReadyChecker().Do(context.Background())
-	if err != nil {
-		panic(err)
+		AppLogger.Error("Failed to create Weaviate client", "error", err)
+		return
 	}
 
 	if client == nil {
+		AppLogger.Error("Weaviate client is nil")
 		panic("Weaviate client is nil")
 	}
 
-	WeaviateClient = client
+	ready, err := client.Misc().ReadyChecker().Do(context.Background())
+	if err != nil {
+		AppLogger.Error("Weaviate ready check failed", "error", err)
+		panic(err)
+	}
 
-	fmt.Printf("Weaviate connection status: %v \n", ready)
+	WeaviateClient = client
+	AppLogger.Info("Connected to Weaviate successfully", "ready", ready)
 }
