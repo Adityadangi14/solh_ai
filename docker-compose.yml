@@ -96,6 +96,9 @@ services:
       - "3001:3000"
     volumes:
       - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SERVER_ROOT_URL=https://stagingai.solhapp.com/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
     depends_on:
       - prometheus
     networks:
