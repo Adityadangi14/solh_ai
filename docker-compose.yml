@@ -14,7 +14,7 @@ services:
       ENABLE_MODULES: text2vec-transformers
       TRANSFORMERS_INFERENCE_API: "http://t2v-transformers:8080"
       RAFT_BOOTSTRAP_EXPECTED: 1
-      DISABLE_TELEMETRY: "true"
+      DISABLE_TELEMETRY: "false"
       RAFT_BOOTSTRAP_TIMEOUT: 300
     depends_on:
       t2v-transformers:
@@ -76,7 +76,7 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     entrypoint: >
-      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot --email muneet.dhanker@omlogic.com --agree-tos --no-eff-email -d stagingai.solhapp.com"
+      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot --email muneet.dhanker@omlogic.com --agree-tos --no-eff-email -d ai.solhapp.com"
     networks:
       - web
   prometheus:
