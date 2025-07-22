@@ -97,7 +97,7 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     environment:
-      - GF_SERVER_ROOT_URL=https://stagingai.solhapp.com/grafana/
+      - GF_SERVER_ROOT_URL=https://ai.solhapp.com/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
     depends_on:
       - prometheus
@@ -117,7 +117,9 @@ services:
     image: grafana/promtail:2.9.4
     container_name: promtail
     volumes:
-      - ./logs:/app/logs
+      - /var/log:/var/log                    # Needed for system logs (optional)
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro  # Mount Docker logs
+      - /etc/machine-id:/etc/machine-id:ro  # Required for Promtail service label
       - ./promtail-config.yml:/etc/promtail/promtail.yaml
     command: -config.file=/etc/promtail/promtail.yaml
     networks:
