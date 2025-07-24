@@ -1,3 +1,4 @@
 .env
 weaviate-data
 nginx
+logs

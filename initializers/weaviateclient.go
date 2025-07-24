@@ -11,7 +11,7 @@ var WeaviateClient *weaviate.Client
 func ConnectToWeaviate() {
 
 	cfg := weaviate.Config{
-		Host:   "weaviate:8080",
+		Host:   "localhost:8080",
 		Scheme: "http",
 	}
 

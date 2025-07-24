@@ -154,6 +154,8 @@ func Frameprompt(query string, userId string) string {
 
 	recomm, _ := db.NearSearchContent(query)
 
+	fmt.Println(recomm)
+
 	prompt = "user previous chat is:- \n" + chat + "\n" + AnsweringGuidlines + "\n" + "user current query is :-" + query + ReccommendationGuidelines + "Things you can reccommend :- " + recomm
 
 	return prompt
