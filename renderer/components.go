@@ -258,7 +258,7 @@ func RenderAudio(model appmodels.ContentModel) map[string]any {
                         "type":  "icon",
                         "icon":  "play_circle_filled",
                         "size":  28,
-                        "color":  "#1E88E5"
+                        "color":  "#1858ec"
                     },
                     {
                         "type":  "sizedBox",
