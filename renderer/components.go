@@ -146,107 +146,128 @@ func RenderBlog(model appmodels.ContentModel) map[string]any {
 
 func RenderAudio(model appmodels.ContentModel) map[string]any {
 	str := `
-  {
-  "type": "container",
-  "decoration": {
-    "color": "#FFFFFF",
-    "borderRadius": {
-      "topLeft": 16.0,
-      "topRight": 16.0,
-      "bottomLeft": 16.0,
-      "bottomRight": 16.0
-    },
-    "boxShadow": [
-      {
-        "color": "#22000000",
-        "blurRadius": 8.0,
-        "offset": { "dx": 0, "dy": 2 }
-      }
-    ]
-  },
-  "child": {
-    "type": "padding",
-    "padding": { "all": 12.0 },
-    "child": {
-      "type": "row",
-      "crossAxisAlignment": "center",
-      "children": [
-        {
-          "type": "container",
-          "width": 60.0,
-          "height": 60.0,
-          "clipBehavior": "hardEdge",
-          "decoration": {
-            "borderRadius": {
-              "topLeft": 30.0,
-              "topRight": 30.0,
-              "bottomLeft": 30.0,
-              "bottomRight": 30.0
-            }
-          },
-          "child": {
-            "type": "image",
-            "src": "%v", 
-            "imageType": "network",
-            "width": 60.0,
-            "height": 60.0,
-            "fit": "cover"
-          }
-        },
-        {
-          "type": "sizedBox",
-          "width": 12.0
-        },
-        {
-          "type": "expanded",
-          "child": {
-            "type": "column",
-            "crossAxisAlignment": "start",
-            "children": [
-              {
-                "type": "padding",
-                "padding": { "right": 12.0 },
-                "child": {
-                  "type": "text",
-                  "maxLines": 2,
-                  "data": "%v",
-                  "style": {
-                    "fontSize": 14.0,
-                    "fontWeight": "w700",
-                    "color": "#222222"
-                  }
+ {
+        "type":  "container",
+        "height":  80,
+        "decoration":  {
+            "color":  "#FFFFFF",
+            "borderRadius":  {
+                "topLeft":  16,
+                "topRight":  16,
+                "bottomLeft":  16,
+                "bottomRight":  16
+            },
+            "boxShadow":  [
+                {
+                    "color":  "#22000000",
+                    "blurRadius":  8,
+                    "offset":  {
+                        "dx":  0,
+                        "dy":  2
+                    }
                 }
-              },
-              {
-                "type": "sizedBox",
-                "height": 4.0
-              },
-              {
-                "type": "text",
-                "data": "Audio",
-                "style": {
-                  "fontSize": 12.0,
-                  "fontWeight": "w500",
-                  "color": "#777777"
-                }
-              }
             ]
-          }
         },
-        {
-          "type": "sizedBox",
-          "width": 8.0
-        },
-        {
-          "type": "icon",
-          "icon": "play_circle_filled",
-          "size": 28.0,
-          "color": "#1E88E5"
+        "child":  {
+            "type":  "padding",
+            "padding":  {
+                "all":  12
+            },
+            "child":  {
+                "type":  "row",
+                "crossAxisAlignment":  "center",
+                "children":  [
+                   {
+                        "type":  "sizedBox",
+                        "width":  8
+                    },
+                    {
+                        "type":  "container",
+                        "width":  60,
+                        "height":  60,
+                        "clipBehavior":  "hardEdge",
+                        "decoration":  {
+                            "borderRadius":  {
+                                "topLeft":  30,
+                                "topRight":  30,
+                                "bottomLeft":  30,
+                                "bottomRight":  30
+                            },
+                            "color":  "#F0F0F0"
+                        },
+                        "child":  {
+                            "type":  "padding",
+                            "padding":  {
+                                "all":  0
+                            },
+                            "child":  {
+                                "type":  "image",
+                                "src":  "%v",
+                                "imageType":  "network",
+                                "fit":  "cover"
+                            }
+                        }
+                    },
+                    {
+                        "type":  "sizedBox",
+                        "width":  12
+                    },
+                    {
+                        "type":  "expanded",
+                        "child":  {
+                            "type":  "column",
+                            "crossAxisAlignment":  "start",
+                            "children":  [
+                                {
+                                    "type":  "padding",
+                                    "padding":  {
+                                        "right":  12
+                                    },
+                                    "child":  {
+                                        "type":  "text",
+                                        "maxLines":  2,
+                                        "data":  "%v",
+                                        "style":  {
+                                            "fontSize":  14,
+                                            "fontWeight":  "w700",
+                                            "color":  "#222222"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type":  "sizedBox",
+                                    "height":  4
+                                },
+                                {
+                                    "type":  "text",
+                                    "data":  "Audio",
+                                    "style":  {
+                                        "fontSize":  12,
+                                        "fontWeight":  "w500",
+                                        "color":  "#777777"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type":  "sizedBox",
+                        "width":  8
+                    },
+                    {
+                        "type":  "icon",
+                        "icon":  "play_circle_filled",
+                        "size":  28,
+                        "color":  "#1E88E5"
+                    },
+                    {
+                        "type":  "sizedBox",
+                        "width":  8
+                    }
+                ]
+            }
         }
-      ]
     }
-  }
-}
   `
 
 	audioMap := map[string]any{
