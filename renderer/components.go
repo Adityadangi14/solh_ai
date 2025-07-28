@@ -36,7 +36,7 @@ func ComponentRenderer(items []string) ([]map[string]any, error) {
 			return nil, err
 		}
 
-		initializers.AppLogger.Info("contentModel", "contentModel", contentModel.Get.Content)
+		initializers.AppLogger.Info("contentModel", " contentModel", contentModel.Get.Content)
 
 		comp := RenderTypeController(contentModel)
 
