@@ -6,6 +6,7 @@ import (
 
 	"github.com/Adityadangi14/solh_ai/appmodels"
 	"github.com/Adityadangi14/solh_ai/db"
+	"github.com/Adityadangi14/solh_ai/initializers"
 )
 
 func ComponentRenderer(items []string) ([]map[string]any, error) {
@@ -37,6 +38,8 @@ func ComponentRenderer(items []string) ([]map[string]any, error) {
 		comp := RenderTypeController(contentModel)
 
 		components = append(components, comp)
+
+		initializers.AppLogger.Info("components", "components", components)
 	}
 
 	return components, nil

@@ -43,6 +43,8 @@ func SendPrompt(ctx context.Context, query string, userId string) (string, error
 		return "", err
 	}
 
+	initializers.AppLogger.Info("marshaledRes", "marshaledRes", string(marshaledRes))
+
 	initializers.AppLogger.Info("Prompt processed successfully", "userId", userId)
 	return string(marshaledRes), nil
 }

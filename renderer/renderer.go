@@ -1,6 +1,11 @@
 package renderer
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+
+	"github.com/Adityadangi14/solh_ai/initializers"
+)
 
 func Render(str string) (map[string]any, error) {
 
@@ -9,6 +14,8 @@ func Render(str string) (map[string]any, error) {
 	re := regexp.MustCompile(`https?://[^\s]+`)
 
 	urls := re.FindAllString(str, -1)
+
+	initializers.AppLogger.Info("Urls", "urls", strings.Join(urls, ","))
 
 	cleanedText := re.ReplaceAllString(str, "")
 
