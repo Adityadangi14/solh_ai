@@ -14,9 +14,10 @@ func ComponentRenderer(items []string) ([]map[string]any, error) {
 	components := make([]map[string]any, 0)
 	for _, item := range items {
 		res, err := db.GetUrlObject(item)
-
+		initializers.AppLogger.Info("objects", "GetUrlObject", res)
 		if err != nil {
 			fmt.Println(err)
+			initializers.AppLogger.Error("failded to get Url objects", "GetUrlObject", err)
 		}
 
 		data := res.Data
