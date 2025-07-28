@@ -50,7 +50,7 @@ func ComponentRenderer(items []string) ([]map[string]any, error) {
 
 func RenderTypeController(obj appmodels.ContentModel) map[string]any {
 	switch obj.Get.Content[0].ContentType {
-	case "blog":
+	case "Blog":
 		return RenderBlog(obj)
 
 	case "audio":
