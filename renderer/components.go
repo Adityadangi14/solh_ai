@@ -112,7 +112,7 @@ func RenderBlog(model appmodels.ContentModel) map[string]any {
                 "type": "image",
                 "imageType": "network",
                 "src":
-                    %v",
+                    "%v",
                 "fit": "cover",
                 "width": 150,
                 "height": 200
