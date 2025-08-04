@@ -64,80 +64,113 @@ func RenderBlog(model appmodels.ContentModel) map[string]any {
 	str := `
 	    {
   "type": "container",
+  "height": 200,
+  "width": 160,
   "decoration": {
     "color": "#FFFFFF",
     "borderRadius": {
-      "topLeft": 16.0,
-      "topRight": 16.0,
-      "bottomLeft": 16.0,
-      "bottomRight": 16.0
+      "topLeft": 10,
+      "topRight": 10,
+      "bottomLeft": 10,
+      "bottomRight": 10
     },
     "boxShadow": [
       {
         "color": "#22000000",
-        "blurRadius": 8.0,
+        "blurRadius": 8,
         "offset": {"dx": 0, "dy": 2}
       }
     ]
   },
   "child": {
-    "type": "padding",
-    "padding": { "all": 12.0 },
-    "child": {
-      "type": "row",
-      "crossAxisAlignment": "start",
-      "children": [
-        {
-          "type": "image",
-          "src": "%v",
-          "imageType": "network",
-          "width": 80.0,
-          "height": 80.0,
-          "fit": "cover"
-        },
-        {
-          "type": "sizedBox",
-          "width": 12.0
-        },
-        {
-          "type": "expanded",
-          "child": {
-            "type": "column",
-            "crossAxisAlignment": "start",
-            "children": [
-             {
-            "type": "padding",
-                "padding": { "right": 12.0 },
-                "child": {
+    "type": "row",
+    "mainAxisSize": "min",
+    "children": [
+      {"type": "sizedBox", "width": 5},
+      {
+        "type": "sizedBox",
+        "width": 150,
+        "child": {
+          "type": "column",
+          "crossAxisAlignment": "start",
+          "children": [
+            {"type": "sizedBox", "height": 10},
+            {
+              "type": "container",
+              "height": 90,
+              "clipBehavior": "hardEdge",
+              "decoration": {
+                "color": "#F0F0F0",
+                "borderRadius": {
+                  "topLeft": 10,
+                  "topRight": 10,
+                  "bottomLeft": 10,
+                  "bottomRight": 10
+                }
+              },
+              "child": {
+                "type": "image",
+                "imageType": "network",
+                "src":
+                    %v",
+                "fit": "cover",
+                "width": 150,
+                "height": 200
+              }
+            },
+            {"type": "sizedBox", "height": 10},
+            {
+              "type": "container",
+              "decoration": {
+                "color": "#2196F3",
+                "borderRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8
+                }
+              },
+              "child": {
+                "type": "row",
+                "mainAxisSize": "min",
+                "children": [
+                  {"type": "sizedBox", "width": 5},
+                  {
+                    "type": "column",
+                    "children": [
+                      {"type": "sizedBox", "height": 5},
+                      {
+                        "type": "text",
+                        "data": "Blog",
+                        "style": {"fontSize": 12, "color": "#FFFFFF"}
+                      },
+                      {"type": "sizedBox", "height": 5}
+                    ]
+                  },
+                  {"type": "sizedBox", "width": 5}
+                ]
+              }
+            },
+            {"type": "sizedBox", "height": 10},
+            {
+              "type": "expanded",
+              "child": {
                 "type": "text",
-                "maxLines": 3,
                 "data": "%v",
-           
+                "maxLines": 2,
+                "overflow": "ellipsis",
                 "style": {
-                  "fontSize": 14.0,
+                  "fontSize": 14,
                   "fontWeight": "w700",
                   "color": "#222222"
                 }
               }
-              },
-               {
-                "type": "sizedBox",
-                "height": 4.0
-              },
-              {
-                "type": "text",
-                "data": "Blog",
-                "style": {
-                  "fontSize": 12.0,
-                  "fontWeight": "w500",
-                  "color": "#777777"
-                }
-              }         
-            ]
-          }
+            },
+            {"type": "sizedBox", "height": 10}
+          ]
         }
-      ]
-    }
+      }
+    ]
   }
 }`
 
@@ -153,127 +186,116 @@ func RenderBlog(model appmodels.ContentModel) map[string]any {
 func RenderAudio(model appmodels.ContentModel) map[string]any {
 	str := `
  {
-        "type":  "container",
-        "height":  80,
-        "decoration":  {
-            "color":  "#FFFFFF",
-            "borderRadius":  {
-                "topLeft":  16,
-                "topRight":  16,
-                "bottomLeft":  16,
-                "bottomRight":  16
-            },
-            "boxShadow":  [
-                {
-                    "color":  "#22000000",
-                    "blurRadius":  8,
-                    "offset":  {
-                        "dx":  0,
-                        "dy":  2
-                    }
+  "type": "container",
+  "height": 200,
+  "width": 160,
+  "decoration": {
+    "color": "#FFFFFF",
+    "borderRadius": {
+      "topLeft": 10,
+      "topRight": 10,
+      "bottomLeft": 10,
+      "bottomRight": 10
+    },
+    "boxShadow": [
+      {
+        "color": "#22000000",
+        "blurRadius": 8,
+        "offset": {"dx": 0, "dy": 2}
+      }
+    ]
+  },
+  "child": {
+    "type": "row",
+    "mainAxisSize": "min",
+    "children": [
+      {"type": "sizedBox", "width": 5},
+      {
+        "type": "sizedBox",
+        "width": 150,
+        "child": {
+          "type": "column",
+          "crossAxisAlignment": "start",
+          "children": [
+            {"type": "sizedBox", "height": 10},
+            {
+              "type": "container",
+              "height": 90,
+              "clipBehavior": "hardEdge",
+              "decoration": {
+                "color": "#F0F0F0",
+                "borderRadius": {
+                  "topLeft": 10,
+                  "topRight": 10,
+                  "bottomLeft": 10,
+                  "bottomRight": 10
                 }
-            ]
-        },
-        "child":  {
-            "type":  "padding",
-            "padding":  {
-                "all":  12
+              },
+              "child": {
+                "type": "image",
+                "imageType": "network",
+                "src":
+                    "%v",
+                "fit": "cover",
+                "width": 150,
+                "height": 200
+              }
             },
-            "child":  {
-                "type":  "row",
-                "crossAxisAlignment":  "center",
-                "children":  [
-                   {
-                        "type":  "sizedBox",
-                        "width":  8
-                    },
-                    {
-                        "type":  "container",
-                        "width":  60,
-                        "height":  60,
-                        "clipBehavior":  "hardEdge",
-                        "decoration":  {
-                            "borderRadius":  {
-                                "topLeft":  30,
-                                "topRight":  30,
-                                "bottomLeft":  30,
-                                "bottomRight":  30
-                            },
-                            "color":  "#F0F0F0"
-                        },
-                        "child":  {
-                            "type":  "padding",
-                            "padding":  {
-                                "all":  0
-                            },
-                            "child":  {
-                                "type":  "image",
-                                "src":  "%v",
-                                "imageType":  "network",
-                                "fit":  "cover"
-                            }
-                        }
-                    },
-                    {
-                        "type":  "sizedBox",
-                        "width":  12
-                    },
-                    {
-                        "type":  "expanded",
-                        "child":  {
-                            "type":  "column",
-                            "crossAxisAlignment":  "start",
-                            "children":  [
-                                {
-                                    "type":  "padding",
-                                    "padding":  {
-                                        "right":  12
-                                    },
-                                    "child":  {
-                                        "type":  "text",
-                                        "maxLines":  2,
-                                        "data":  "%v",
-                                        "style":  {
-                                            "fontSize":  14,
-                                            "fontWeight":  "w700",
-                                            "color":  "#222222"
-                                        }
-                                    }
-                                },
-                                {
-                                    "type":  "sizedBox",
-                                    "height":  4
-                                },
-                                {
-                                    "type":  "text",
-                                    "data":  "Audio",
-                                    "style":  {
-                                        "fontSize":  12,
-                                        "fontWeight":  "w500",
-                                        "color":  "#777777"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "type":  "sizedBox",
-                        "width":  8
-                    },
-                    {
-                        "type":  "icon",
-                        "icon":  "play_circle_filled",
-                        "size":  28,
-                        "color":  "#1858ec"
-                    },
-                    {
-                        "type":  "sizedBox",
-                        "width":  8
-                    }
+            {"type": "sizedBox", "height": 10},
+            {
+              "type": "container",
+              "decoration": {
+                "color": "#2196F3",
+                "borderRadius": {
+                  "topLeft": 8,
+                  "topRight": 8,
+                  "bottomLeft": 8,
+                  "bottomRight": 8
+                }
+              },
+              "child": {
+                "type": "row",
+                "mainAxisSize": "min",
+                "children": [
+                  {"type": "sizedBox", "width": 5},
+                  {
+                    "type": "column",
+                    "children": [
+                      {"type": "sizedBox", "height": 5},
+                      {
+                        "type": "text",
+                        "data": "Audio",
+                        "style": {"fontSize": 12, "color": "#FFFFFF"}
+                      },
+                      {"type": "sizedBox", "height": 5}
+                    ]
+                  },
+                  {"type": "sizedBox", "width": 5}
                 ]
-            }
+              }
+            },
+            {"type": "sizedBox", "height": 10},
+            {
+              "type": "expanded",
+              "child": {
+                "type": "text",
+                "data": "%v",
+                "maxLines": 2,
+                "overflow": "ellipsis",
+                "style": {
+                  "fontSize": 14,
+                  "fontWeight": "w700",
+                  "color": "#222222"
+                }
+              }
+            },
+            {"type": "sizedBox", "height": 10}
+          ]
         }
-    }
+      }
+    ]
+  }
+}
   `
 
 	audioMap := map[string]any{
