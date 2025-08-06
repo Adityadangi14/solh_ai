@@ -182,9 +182,14 @@ func RenderPdf(model appmodels.ContentModel) map[string]any {
 }`
 
 	pdfMap := map[string]any{
-		"type":    "pdf",
-		"route":   "/pdfViewerScreen",
-		"data":    model.Get.Content[0].URL,
+		"type":  "pdf",
+		"route": "/pdfViewerScreen",
+		"data": map[string]any{
+			"url":         model.Get.Content[0].URL,
+			"description": model.Get.Content[0].Description,
+			"title":       model.Get.Content[0].Title,
+			"image":       model.Get.Content[0].Image,
+		},
 		"content": fmt.Sprintf(str, model.Get.Content[0].Image, model.Get.Content[0].Title),
 	}
 	return pdfMap
@@ -305,9 +310,14 @@ func RenderBlog(model appmodels.ContentModel) map[string]any {
 }`
 
 	blogMap := map[string]any{
-		"type":    "blog",
-		"route":   "/blogScreen",
-		"data":    model.Get.Content[0].URL,
+		"type":  "blog",
+		"route": "/blogScreen",
+		"data": map[string]any{
+			"url":         model.Get.Content[0].URL,
+			"description": model.Get.Content[0].Description,
+			"title":       model.Get.Content[0].Title,
+			"image":       model.Get.Content[0].Image,
+		},
 		"content": fmt.Sprintf(str, model.Get.Content[0].Image, model.Get.Content[0].Title),
 	}
 	return blogMap
