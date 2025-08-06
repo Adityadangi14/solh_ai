@@ -429,9 +429,14 @@ func RenderAudio(model appmodels.ContentModel) map[string]any {
   `
 
 	audioMap := map[string]any{
-		"type":    "audio",
-		"route":   "/audioPlayerScreen",
-		"data":    model.Get.Content[0].URL,
+		"type":  "audio",
+		"route": "/audioPlayerScreen",
+		"data": map[string]any{
+			"url":         model.Get.Content[0].URL,
+			"description": model.Get.Content[0].Description,
+			"title":       model.Get.Content[0].Title,
+			"image":       model.Get.Content[0].Image,
+		},
 		"content": fmt.Sprintf(str, model.Get.Content[0].Image, model.Get.Content[0].Title),
 	}
 	return audioMap
@@ -553,9 +558,14 @@ func RenderVideo(model appmodels.ContentModel) map[string]any {
   `
 
 	videoMap := map[string]any{
-		"type":    "Video",
-		"route":   "/videoPlayerScreen",
-		"data":    model.Get.Content[0].URL,
+		"type":  "Video",
+		"route": "/videoPlayerScreen",
+		"data": map[string]any{
+			"url":         model.Get.Content[0].URL,
+			"description": model.Get.Content[0].Description,
+			"title":       model.Get.Content[0].Title,
+			"image":       model.Get.Content[0].Image,
+		},
 		"content": fmt.Sprintf(str, model.Get.Content[0].Image, model.Get.Content[0].Title),
 	}
 	return videoMap
