@@ -70,9 +70,13 @@ services:
 
   openresty:
     image: openresty/openresty:alpine
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     container_name: openresty
     volumes:
       - ./nginx/nginx.conf:/usr/local/openresty/nginx/nginx.conf:ro
+      - ./nginx/lua/jwt-auth.lua:/usr/local/openresty/nginx/lua/jwt-auth.lua:ro 
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     ports:
