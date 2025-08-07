@@ -15,5 +15,7 @@ CMD ["./main"]
 
 FROM openresty/openresty:alpine
 
-RUN apk add --no-cache git luarocks lua5.1-cjson && \
-    luarocks install lua-resty-jw
+RUN apk add --no-cache git build-base lua5.1 lua5.1-dev luarocks && \
+    luarocks install lua-cjson && \
+    luarocks install lua-resty-jwt
+
