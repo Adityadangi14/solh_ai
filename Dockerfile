@@ -12,3 +12,8 @@ RUN go build -o main server.go
 EXPOSE 3000
 
 CMD ["./main"]
+
+FROM openresty/openresty:alpine
+
+RUN apk add --no-cache git luarocks lua5.1-cjson && \
+    luarocks install lua-resty-jw

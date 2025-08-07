@@ -71,7 +71,7 @@ services:
   openresty:
     image: openresty/openresty:alpine
     build:
-      context: ./nginx
+      context: .
     container_name: openresty
     volumes:
       - ./nginx/nginx.conf:/usr/local/openresty/nginx/nginx.conf:ro
