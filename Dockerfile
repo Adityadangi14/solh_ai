@@ -13,9 +13,10 @@ EXPOSE 3000
 
 CMD ["./main"]
 
-FROM openresty/openresty:alpine
+FROM openresty/openresty:alpine-fat
 
-RUN apk add --no-cache git build-base lua5.1 lua5.1-dev luarocks && \
+RUN apk add --no-cache git build-base && \
     luarocks install lua-cjson && \
     luarocks install lua-resty-jwt
+
 
