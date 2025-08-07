@@ -52,11 +52,27 @@ services:
     networks:
       - web
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./certbot/conf:/etc/letsencrypt
+  #     - ./certbot/www:/var/www/certbot
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - go-server
+  #   networks:
+  #     - web
+  #   command: [ "nginx", "-g", "daemon off;" ]
+
+  openresty:
+    image: openresty/openresty:alpine
+    container_name: openresty
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/nginx.conf:ro
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     ports:
@@ -66,7 +82,8 @@ services:
       - go-server
     networks:
       - web
-    command: [ "nginx", "-g", "daemon off;" ]
+    command: [ "/usr/local/openresty/bin/openresty", "-g", "daemon off;" ]
+
 
   certbot:
     image: certbot/certbot
@@ -118,12 +135,13 @@ services:
     container_name: promtail
     volumes:
       - ./logs:/app/logs
-      - /var/run/docker.sock:/var/run/docker.sock  # 👈 Docker socket for container metadata
-      - /tmp:/tmp  # For Promtail position tracking
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - /tmp:/tmp
       - ./promtail-config.yml:/etc/promtail/promtail.yaml
     command: -config.file=/etc/promtail/promtail.yaml
     networks:
       - web
+
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
