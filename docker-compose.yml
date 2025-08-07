@@ -69,9 +69,8 @@ services:
   #   command: [ "nginx", "-g", "daemon off;" ]
 
   openresty:
-    image: openresty/openresty:alpine
     build:
-      context: .
+      context: ./nginx
     container_name: openresty
     volumes:
       - ./nginx/nginx.conf:/usr/local/openresty/nginx/nginx.conf:ro
