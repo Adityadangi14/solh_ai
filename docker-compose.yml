@@ -74,8 +74,7 @@ services:
       dockerfile: Dockerfile
     container_name: openresty
     volumes:
-      - ./nginx/conf/nginx.conf:/usr/local/openresty/nginx
-      - ./nginx/conf/sites:/etc/nginx/sites
+      - ./nginx/ssl.conf:/etc/nginx/conf.d/
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     ports:
