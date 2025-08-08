@@ -7,6 +7,7 @@ local secret = os.getenv("JWT_SECRET") or "default-secret-please-change"
 
 function _M.verify()
     -- Skip JWT verification for specific paths
+    print(secret)
     local skip_paths = {
         ["^/grafana"] = true,
         ["^/weaviate"] = true,
