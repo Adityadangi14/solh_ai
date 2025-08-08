@@ -1,6 +1,6 @@
 .env
 weaviate-data
-nginx
+
 logs
 certbot
 tmp

@@ -69,23 +69,29 @@ services:
   #   command: [ "nginx", "-g", "daemon off;" ]
 
   openresty:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: openresty
-    volumes:
-      - ./nginx/ssl.conf:/etc/nginx/conf.d/
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    ports:
-      - "80:80"
-      - "443:443"
-    env_file:
-      - .env
-    depends_on:
-      - go-server
-    networks:
-      - web
+      build:
+        context: ./nginx
+        dockerfile: Dockerfile
+      container_name: openresty
+      volumes:
+        - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+        - ./nginx/lua/jwt_auth.lua:/usr/local/openresty/nginx/lua/jwt_auth.lua
+        - ./certbot/conf:/etc/letsencrypt
+        - ./certbot/www:/var/www/certbot
+      ports:
+        - "80:80"
+        - "443:443"
+      environment:
+        - JWT_SECRET=${JWT_SECRET}
+      env_file:
+        - .env
+      depends_on:
+        - go-server
+        - grafana
+        - weaviate
+      networks:
+        - web
+      restart: unless-stopped
     
 
   certbot:
